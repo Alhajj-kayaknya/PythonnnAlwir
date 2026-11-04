@@ -7,10 +7,10 @@ class MesinVisionCNNcifar10(nn.Module):
         super(MesinVisionCNNcifar10, self).__init__()
 
         # lapisan 1 buat RGB
-        self.conv1 = nn.Conv2d(3, 16, 3, 1)
+        self.conv1 = nn.Conv2d(3, 16, 3, 1, 1)
 
         # lapisan 2 buat zoom agar makin detail
-        self.conv2 = nn.Conv2d(16, 32, 3, 1)
+        self.conv2 = nn.Conv2d(16, 32, 3, 1, 1)
 
         # dibagi 2 resolusi gambarnya
         self.pool = nn.MaxPool2d(2, 2)
