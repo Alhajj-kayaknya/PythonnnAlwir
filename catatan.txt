@@ -1,0 +1,14 @@
+transform & lanjutannya: Ini SOP persiapan fotonya. ToTensor() ngubah gambar biasa jadi Tensor (format mtk PyTorch) sekaligus ngecilin nilai warna piksel dari 0-255 jadi 0-1. Terus Normalize() ngegeser angka itu jadi di kisaran -1 sampai 1. Tujuannya mutlak satu: biar mtk di dalem AI lu ngitungnya lebih enteng, stabil, dan cepet pinter.
+
+shuffle=True: Ini buat ngacak urutan 50.000 gambar di dalem truk setiap kali mulai putaran belajar yang baru. Gunanya biar AI lu bener-bener belajar ngenalin pola bentuk, bukan curang ngafalin urutan jawaban (misal: "oh abis tebakan anjing, pasti tebakan kucing").
+
+optim.SGD & momentum=0.9: SGD (Stochastic Gradient Descent) itu mekanik atau rumus inti yang tugasnya ngebenerin bobot urat saraf AI tiap kali dia salah nebak. momentum=0.9 itu dorongan ekstra. Ibarat lu nggeser batu ke bawah gunung, momentum bikin laju perbaikannya makin kenceng dan bantu AI lu kaga nyangkut di jalan buntu (local minima) pas lagi nyari letak error terendah.
+
+running_loss = 0.0: Ini cuma bikin variabel penampung kosong dari nol. Tiap mulai putaran belajar baru (epoch), atau tiap abis lapor ke layar, angka tampungan error-nya harus dikosongin lagi biar hitungan lama kaga kecampur ke hitungan baru.
+
+Itungan loop 12.500 & gunanya: Total dataset CIFAR-10 itu 50.000 gambar. Karena lu setting truknya ngangkut 4 gambar sekaligus (batch_size=4), berarti buat namatin 1 buku pelajaran butuh 12.500 antrean/batch (50.000 / 4).
+Loop luar (epoch 2) gunanya buat ngulang namatin buku pelajaran itu 2 kali. AI itu kayak manusia, kaga bakal langsung jago baca buku 1 kali, jadi harus diulang 2 kali, 5 kali, atau 10 kali putaran biar tebakannya makin akurat.
+
+running_loss += loss.item(): Ini buat ngejumlahin total error dari tiap antrean ke dalem penampungan tadi. Tulisan .item() itu wajib buat nyabut angka mutlak mtk-nya dari wujud Tensor PyTorch jadi angka desimal Python biasa, biar bisa ditotalkan.
+
+Dibagi 2000 karena per 2000: Yoi mutlak! Karena variabel running_loss tadi udah nampung hasil tambah-tambahan error dari 2.000 antrean truk, lu wajib bagi 2.000 biar lu dapet nilai rata-rata error-nya pas diprint ke terminal. Begitu udah diprint, dompetnya di-reset ke 0.0 lagi buat nyatet rapor 2.000 antrean berikutnya.
